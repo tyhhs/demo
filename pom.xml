@@ -8,6 +8,7 @@
     <modules>
         <module>springmvc-redis-demo</module>
         <module>netease-nos-tool-demo</module>
+        <module>netease-nos-tool-demo2</module>
     </modules>
     <packaging>pom</packaging>
 
