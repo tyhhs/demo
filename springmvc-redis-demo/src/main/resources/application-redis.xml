@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.0.xsd">
+
+    <!-- Jedis PoolConfig -->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxIdle" value="${jedis.pool.maxIdle}" /> <!-- 最大能够保持idel状态的对象数  -->
+        <property name="maxTotal" value="${jedis.pool.maxActive}" /> <!-- 最大分配的对象数 -->
+        <property name="maxWaitMillis" value="${jedis.pool.maxWait}"/> <!-- jedis调用borrowObject方法时，是否进行有效检查-->
+        <property name="testOnBorrow" value="${jedis.pool.testOnBorrow}" /> <!-- 当调用borrow Object方法时，是否进行有效性检查 -->
+        <property name="testOnReturn" value="${jedis.pool.testOnReturn}"/><!--jedis调用returnObject方法时，是否进行有效检查-->
+    </bean>
+
+    <!-- jedisPool init -->
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg index="0" ref="jedisPoolConfig" />
+        <constructor-arg index="1" value="${redis.host}" type="java.lang.String" />
+        <constructor-arg index="2" value="${redis.port}" type="int" />
+    </bean>
+
+    <!-- Jedis ConnectionFactory -->
+    <!-- jedis单机配置 -->
+    <bean id="jedisConnFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" >
+        <property name="hostName" value="${redis.host}" />
+        <property name="port" value="${redis.port}" />
+        <property name="timeout" value="${redis.timeout}" />
+        <property name="poolConfig" ref="jedisPoolConfig" />
+    </bean>
+
+    <!-- Redis Template -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnFactory"/>
+        <property name="keySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+        </property>
+    </bean>
+
+    <!-- 开启缓存注解 -->
+    <cache:annotation-driven/>
+
+    <!-- 自定义CacheManager，实现缓存有效期可配置 -->
+    <bean name="cacheManager" class="com.netease.tyh.springmvcRedisDemo.cache.ExtendedRedisCacheManager">
+        <constructor-arg name="redisOperations" ref="redisTemplate"/>
+        <constructor-arg name="cacheNames">
+            <set>
+                <value>userCache</value>
+                <value>scheduleCache</value>
+            </set>
+        </constructor-arg>
+        <!-- 默认缓存名字 -->
+        <property name="defaultCacheName" value="redis_test"/>
+        <!-- 是否在容器启动时初始化 -->
+        <property name="loadRemoteCachesOnStartup" value="true"/>
+        <!-- 是否使用前缀 -->
+        <property name="usePrefix" value="true"/>
+        <!-- 前缀命名，仅当usePrefix为true时才生效 -->
+        <property name="cachePrefix">
+            <bean class="org.springframework.data.redis.cache.DefaultRedisCachePrefix">
+                <constructor-arg name="delimiter" value=":"/>
+            </bean>
+        </property>
+        <!-- 缓存名字和有效期的分隔符 -->
+        <property name="separator" value="#"/>
+        <!-- 默认有效期1h -->
+        <property name="defaultExpiration" value="3600"/>
+        <!-- 多个缓存有效期，一般的单个工程可以省略此项 -->
+        <property name="expires">
+            <map>
+                <entry key="userCache" value="3600"/>
+                <entry key="ScheduleCache" value="300"/>
+            </map>
+        </property>
+    </bean>
+</beans>
