@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:reg="http://www.dangdang.com/schema/ddframe/reg"
+       xmlns:job="http://www.dangdang.com/schema/ddframe/job"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.dangdang.com/schema/ddframe/reg
+                        http://www.dangdang.com/schema/ddframe/reg/reg.xsd
+                        http://www.dangdang.com/schema/ddframe/job
+                        http://www.dangdang.com/schema/ddframe/job/job.xsd
+                        ">
+
+    <!--Spring命名空间配置-->
+    <!--配置作业注册中心 -->
+    <reg:zookeeper id="regCenter" serverLists="10.165.124.164:2181,10.165.124.164:2182,10.165.124.164:2183"
+                   namespace="elastic_job_demo" baseSleepTimeMilliseconds="1000" maxSleepTimeMilliseconds="3000"
+                   maxRetries="3" connectionTimeoutMilliseconds="5000" digest="elastic_job_demo"/>
+    <!-- 配置作业A-->
+    <job:bean id="oneOffElasticJob" class="com.netease.tyh.elasticJobDemo.job.MyOneOffElasticJob" regCenter="regCenter"
+              cron="0/10 * * * * ?"   shardingTotalCount="3" shardingItemParameters="0=A,1=B,2=C" />
+    <!-- 配置作业B-->
+    <job:bean id="perpetualElasticJob" class="com.netease.tyh.elasticJobDemo.job.MyPerpetualElasticJob"
+              regCenter="regCenter" cron="0/10 * * * * ?" shardingTotalCount="3" shardingItemParameters="0=A,1=B,2=C"
+              processCountIntervalSeconds="10" concurrentDataProcessThreadCount="10" />
+    <!--Spring命名空间配置 结束-->
+</beans>
