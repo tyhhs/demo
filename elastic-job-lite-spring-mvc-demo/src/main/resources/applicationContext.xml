@@ -9,8 +9,20 @@
 	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
     <!--指明spring组件所在的包，并扫描其中的注解-->
-    <context:component-scan base-package="com.netease.tyh.elasticJobDemo"/>
+    <context:component-scan base-package="com.netease.tyh.elasticJobLiteDemo"/>
 
+    <!--import configuration files-->
+    <bean
+            class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:/jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+    <!--import files end-->
+
+    <import resource="application-data.xml" />
     <import resource="application-mvc.xml"/>
     <import resource="application-job.xml"/>
 </beans>

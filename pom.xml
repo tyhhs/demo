@@ -9,6 +9,8 @@
         <module>springmvc-redis-demo</module>
         <module>netease-nos-tool-demo</module>
         <module>netease-nos-tool-demo2</module>
+        <module>elastic-job-spring-mvc-demo</module>
+        <module>elastic-job-lite-spring-mvc-demo</module>
     </modules>
     <packaging>pom</packaging>
 

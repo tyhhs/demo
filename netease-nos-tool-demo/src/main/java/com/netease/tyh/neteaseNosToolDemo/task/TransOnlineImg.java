@@ -38,17 +38,17 @@ public class TransOnlineImg {
                     String img90 = line + ".jpg";
                     imgUrl = "http://cs.sports.163.com/images/team/90/" + img90;
                     config.setUrl(imgUrl);
-                    config.setPath(Constant.CSL_FILE_PATH + Constant.TEAM_PATH + "90/" + img90);
+                    config.setPath(Constant.CSL_FILE_PATH + Constant.TEAM_PATH + img90);
                     Map<String, String> resMap90 = NosUtil.uploadImageByUrl(config);
                     System.out.println(resMap90.get("ourl"));
 
                     //lk
-                    String imgLk = line + ".png";
-                    imgUrl = "http://cs.sports.163.com/images/team/lk/" + imgLk;
-                    config.setUrl(imgUrl);
-                    config.setPath(Constant.CSL_FILE_PATH + Constant.TEAM_PATH + "lk/" + imgLk);
-                    Map<String, String> resMapLk = NosUtil.uploadImageByUrl(config);
-                    System.out.println(resMapLk.get("ourl"));
+//                    String imgLk = line + ".png";
+//                    imgUrl = "http://cs.sports.163.com/images/team/lk/" + imgLk;
+//                    config.setUrl(imgUrl);
+//                    config.setPath(Constant.CSL_FILE_PATH + Constant.TEAM_PATH + "lk/" + imgLk);
+//                    Map<String, String> resMapLk = NosUtil.uploadImageByUrl(config);
+//                    System.out.println(resMapLk.get("ourl"));
                 }
                 read.close();
             }else{
