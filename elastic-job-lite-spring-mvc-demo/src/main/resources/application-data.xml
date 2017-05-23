@@ -18,4 +18,5 @@
         <property name="maxIdleTime" value="${jdbc.maxIdleTime}" />
         <property name="idleConnectionTestPeriod" value="${jdbc.idleConnectionTestPeriod}" />
     </bean>
+    <!-- 数据库连接池 end-->
 </beans>
