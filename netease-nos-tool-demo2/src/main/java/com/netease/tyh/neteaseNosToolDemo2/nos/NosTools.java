@@ -20,7 +20,7 @@ public class NosTools {
     public static String uploadUrlImg(NosConfig nosConfig){
         String url = Constant.NOS_HOST_TEST + Constant.NOS_UPLOAD_ONLINE;
         //参数
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<String, String>();
         params.put("bucketName", nosConfig.getBucketName());
         params.put("from", nosConfig.getFrom());
         params.put("docid", nosConfig.getDocid());
@@ -41,7 +41,7 @@ public class NosTools {
     public static String uploadImg(NosConfig nosConfig){
         String url = Constant.NOS_HOST_TEST + Constant.NOS_UPLOAD_LOCAL;
         //参数
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<String, String>();
         params.put("uploadtype", nosConfig.getUploadtype());
         params.put("bucketName", nosConfig.getBucketName());
         params.put("from", nosConfig.getFrom());
@@ -52,7 +52,7 @@ public class NosTools {
             params.put("rewitdh", Integer.toString(nosConfig.getRewidth()));
         }
         //图片
-        Map<String, File> files = new HashMap<>();
+        Map<String, File> files = new HashMap<String, File>();
         files.put("file", nosConfig.getFile());
 
         return HttpUtils.sendPost(url, params, files);
