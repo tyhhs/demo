@@ -14,18 +14,13 @@
     <!--Spring命名空间配置-->
     <!--配置作业注册中心 -->
     <reg:zookeeper id="regCenter" server-lists="10.165.124.164:2181,10.165.124.164:2182,10.165.124.164:2183"
-                   namespace="elastic_job_lite_demo" base-sleep-time-milliseconds="1000" max-sleep-time-milliseconds="3000"
-                   max-retries="3" connection-timeout-milliseconds="5000" digest="elastic_job_lite_demo"/>
-    <!-- 配置作业-->
-    <!--<job:simple id="demoSimpleSpringJob" class="com.netease.tyh.elasticJobLiteDemo.job.MyElasticJob"-->
-                <!--registry-center-ref="regCenter" cron="0/10 * * * * ?"-->
-                <!--sharding-total-count="3" sharding-item-parameters="0=A,1=B,2=C"-->
-                <!--job-sharding-strategy-class="com.dangdang.ddframe.job.lite.api.strategy.impl.RotateServerByNameJobShardingStrategy"/>-->
+                   namespace="elastic_job_lite" base-sleep-time-milliseconds="1000" max-sleep-time-milliseconds="3000"
+                   max-retries="3" connection-timeout-milliseconds="5000" digest="elastic_job_lite"/>
 
     <!-- 配置带作业数据库事件追踪的简单作业-->
     <job:simple id="listenerElasticJob" class="com.netease.tyh.elasticJobLiteDemo.job.MyElasticJob"
                 registry-center-ref="regCenter" cron="0/10 * * * * ?"
-                sharding-total-count="3" sharding-item-parameters="0=A,1=B,2=C"
+                sharding-total-count="6" sharding-item-parameters="0=A,1=B,2=C,3=D,4=E,5=F"
                 event-trace-rdb-data-source="dataSource" />
     <!--Spring命名空间配置 结束-->
 </beans>
