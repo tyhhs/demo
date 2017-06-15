@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+     <!--redis properties -->
+    <context:property-placeholder location="classpath:/redis.properties" />
+
+    <!-- Jedis PoolConfig -->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxIdle" value="${jedis.pool.maxIdle}" /> <!-- 最大能够保持idel状态的对象数  -->
+        <property name="maxTotal" value="${jedis.pool.maxActive}" /> <!-- 最大分配的对象数 -->
+        <property name="maxWaitMillis" value="${jedis.pool.maxWait}"/> <!-- jedis调用borrowObject方法时，是否进行有效检查-->
+        <property name="testOnBorrow" value="${jedis.pool.testOnBorrow}" /> <!-- 当调用borrow Object方法时，是否进行有效性检查 -->
+        <property name="testOnReturn" value="${jedis.pool.testOnReturn}"/><!--jedis调用returnObject方法时，是否进行有效检查-->
+    </bean>
+
+    <!-- Jedis ConnectionFactory -->
+    <bean id="jedisConnFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <property name="hostName" value="${redis.host}" />
+        <property name="port" value="${redis.port}" />
+        <property name="timeout" value="${redis.timeout}" />
+        <property name="poolConfig" ref="jedisPoolConfig" />
+    </bean>
+
+    <!-- Redis Template -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+        <property name="connectionFactory"   ref="jedisConnFactory" />
+    </bean>
+</beans>

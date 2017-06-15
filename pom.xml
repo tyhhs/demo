@@ -11,6 +11,7 @@
         <module>netease-nos-tool-demo2</module>
         <module>elastic-job-spring-mvc-demo</module>
         <module>elastic-job-lite-spring-mvc-demo</module>
+        <module>springmvc-jedis-demo</module>
     </modules>
     <packaging>pom</packaging>
 
