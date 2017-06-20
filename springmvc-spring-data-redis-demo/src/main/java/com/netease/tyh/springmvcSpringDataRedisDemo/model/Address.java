@@ -1,5 +1,7 @@
 package com.netease.tyh.springmvcSpringDataRedisDemo.model;
 
+import org.springframework.data.redis.core.RedisHash;
+
 import java.io.Serializable;
 
 /**
@@ -9,6 +11,7 @@ import java.io.Serializable;
  * Modified by: bjtangyunhao
  * Last modified: 2017年06月15日 14:10
  */
+@RedisHash
 public class Address implements Serializable{
 
     private String province;
